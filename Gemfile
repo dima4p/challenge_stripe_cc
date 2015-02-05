@@ -10,6 +10,8 @@ gem 'jbuilder', '~> 2.0'
 
 gem 'therubyracer'
 
+gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+
 group :development do
   gem 'rails_layout'
   gem 'spring-commands-rspec'
