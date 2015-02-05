@@ -35,4 +35,5 @@ group :development, :test do
   gem 'spring'
   gem 'guard'
   gem 'guard-rspec'
+  gem 'dotenv-rails'
 end
