@@ -1,5 +1,7 @@
 class Customer < ActiveRecord::Base
 
+  has_many :credit_cards, dependent: :destroy, inverse_of: :customer
+
   validates :name, presence: true
   validates :email, presence: true
 
@@ -7,8 +9,11 @@ class Customer < ActiveRecord::Base
   before_destroy :remove_from_stripe
   after_rollback :remove_from_stripe
 
-  def stripe_object
-    @stripe_object ||= Stripe::Customer.retrieve stripe_id
+  def stripe_object(reload = false)
+    if not @stripe_object  or reload
+      @stripe_object = Stripe::Customer.retrieve stripe_id
+    end
+    @stripe_object
   end
 
   private

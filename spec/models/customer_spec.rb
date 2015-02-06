@@ -7,6 +7,7 @@ RSpec.describe Customer, :type => :model do
   it {should be_valid}
   it {should validate_presence_of :name}
   it {should validate_presence_of :email}
+  it {should have_many(:credit_cards).dependent(:destroy)}
 
   describe 'on Stripe server' do
     context 'at creation' do
@@ -32,7 +33,7 @@ RSpec.describe Customer, :type => :model do
       end
     end
 
-    context 'at delettion' do
+    context 'at deletion' do
 
       it 'removes the Customer from Stripe' do
         subject
@@ -44,6 +45,11 @@ RSpec.describe Customer, :type => :model do
   describe '#stripe_object' do
     it 'fetches the corresponding Stripe::Customer' do
       expect(Customer.find(subject.id).stripe_object).to be
+    end
+
+    it 'refetches the corresponding Stripe::Customer if parameter true is given' do
+      old = subject.stripe_object
+      expect(subject.stripe_object true).not_to equal old
     end
   end
 
