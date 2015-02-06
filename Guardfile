@@ -32,6 +32,8 @@
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
+require 'active_support/core_ext/string/inflections'
+
 guard :rspec, cmd: 'bundle exec rspec', failed_mode: :focus do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
@@ -74,4 +76,10 @@ guard :rspec, cmd: 'bundle exec rspec', failed_mode: :focus do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
     Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
   end
+
+  # Factory Girl
+  watch(%r{^spec/factories/(.+)\.rb$}) do |m|
+    ["spec/controllers/#{m[1]}_controller_spec.rb", "spec/models/#{m[1].singularize}_spec.rb", "spec/views/#{m[1]}"]
+  end
+
 end
