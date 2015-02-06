@@ -4,10 +4,6 @@ class CreditCard < ActiveRecord::Base
 
   attr_writer :token
 
-  define_attribute_method 'cardholder_name'
-  define_attribute_method 'exp_month'
-  define_attribute_method 'exp_year'
-
   validates :customer, presence: true
 
   before_create :add_to_stripe
